@@ -2,6 +2,13 @@
   <img src="https://avatars2.githubusercontent.com/u/5411890" alt="MultiMC logo"/>
 </p>
 
+Patch
+=====
+
+- Login is always successful.
+
+- M\*\*\*\*g account validation checks are disabled where needed.
+
 MultiMC 5
 =========
 

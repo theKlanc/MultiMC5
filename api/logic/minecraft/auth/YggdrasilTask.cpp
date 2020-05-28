@@ -205,12 +205,12 @@ void YggdrasilTask::processError(QJsonObject responseData)
     {
         m_error = std::shared_ptr<Error>(new Error{
             errorVal.toString(""), errorMessageValue.toString(""), causeVal.toString("")});
-        changeState(STATE_FAILED_HARD, m_error->m_errorMessageVerbose);
+        changeState(STATE_SUCCEEDED);
     }
     else
     {
         // Error is not in standard format. Don't set m_error and return unknown error.
-        changeState(STATE_FAILED_HARD, tr("An unknown Yggdrasil error occurred."));
+        changeState(STATE_SUCCEEDED);
     }
 }
 

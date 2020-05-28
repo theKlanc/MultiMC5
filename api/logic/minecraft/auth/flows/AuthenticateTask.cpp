@@ -89,12 +89,12 @@ void AuthenticateTask::processResponse(QJsonObject responseData)
     if (clientToken.isEmpty())
     {
         // Fail if the server gave us an empty client token
-        changeState(STATE_FAILED_HARD, tr("Authentication server didn't send a client token."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
     if (!m_account->m_clientToken.isEmpty() && clientToken != m_account->m_clientToken)
     {
-        changeState(STATE_FAILED_HARD, tr("Authentication server attempted to change the client token. This isn't supported."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
     // Set the client token.
@@ -106,7 +106,7 @@ void AuthenticateTask::processResponse(QJsonObject responseData)
     if (accessToken.isEmpty())
     {
         // Fail if the server didn't give us an access token.
-        changeState(STATE_FAILED_HARD, tr("Authentication server didn't send an access token."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
     // Set the access token.
@@ -151,12 +151,12 @@ void AuthenticateTask::processResponse(QJsonObject responseData)
     QString currentProfileId = currentProfile.value("id").toString("");
     if (currentProfileId.isEmpty())
     {
-        changeState(STATE_FAILED_HARD, tr("Authentication server didn't specify a currently selected profile. The account exists, but likely isn't premium."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
     if (!m_account->setCurrentProfile(currentProfileId))
     {
-        changeState(STATE_FAILED_HARD, tr("Authentication server specified a selected profile that wasn't in the available profiles list."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
 

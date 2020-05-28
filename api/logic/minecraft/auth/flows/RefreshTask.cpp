@@ -71,12 +71,12 @@ void RefreshTask::processResponse(QJsonObject responseData)
     if (clientToken.isEmpty())
     {
         // Fail if the server gave us an empty client token
-        changeState(STATE_FAILED_HARD, tr("Authentication server didn't send a client token."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
     if (!m_account->m_clientToken.isEmpty() && clientToken != m_account->m_clientToken)
     {
-        changeState(STATE_FAILED_HARD, tr("Authentication server attempted to change the client token. This isn't supported."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
 
@@ -86,7 +86,7 @@ void RefreshTask::processResponse(QJsonObject responseData)
     if (accessToken.isEmpty())
     {
         // Fail if the server didn't give us an access token.
-        changeState(STATE_FAILED_HARD, tr("Authentication server didn't send an access token."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
 
@@ -96,7 +96,7 @@ void RefreshTask::processResponse(QJsonObject responseData)
     QString currentProfileId = currentProfile.value("id").toString("");
     if (m_account->currentProfile()->id != currentProfileId)
     {
-        changeState(STATE_FAILED_HARD, tr("Authentication server didn't specify the same prefile as expected."));
+        changeState(STATE_SUCCEEDED);
         return;
     }
 
