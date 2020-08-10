@@ -56,7 +56,7 @@
 #include <launch/LaunchTask.h>
 #include <minecraft/auth/MojangAccountList.h>
 #include <SkinUtils.h>
-#include <net/URLConstants.h>
+#include <BuildConfig.h>
 #include <net/NetJob.h>
 #include <net/Download.h>
 #include <news/NewsChecker.h>
@@ -578,7 +578,9 @@ public:
         MainWindow->resize(800, 600);
         MainWindow->setWindowIcon(MMC->getThemedIcon("logo"));
         MainWindow->setWindowTitle("MultiMC 5");
+#ifndef QT_NO_ACCESSIBILITY
         MainWindow->setAccessibleName("MultiMC");
+#endif
 
         createMainToolbar(MainWindow);
 
@@ -770,7 +772,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new MainWindow
         for (auto profile : account->profiles())
         {
             auto meta = Env::getInstance().metacache()->resolveEntry("skins", profile.id + ".png");
-            auto action = Net::Download::makeCached(QUrl(URLConstants::SKINS_BASE + profile.id + ".png"), meta);
+            auto action = Net::Download::makeCached(QUrl(BuildConfig.SKINS_BASE + profile.id + ".png"), meta);
             skin_dls.append(action);
             meta->setStale(true);
         }

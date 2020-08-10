@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.1)
 
 string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BUILD_DIR}" IS_IN_SOURCE_BUILD)
 if(IS_IN_SOURCE_BUILD)
-    message(AUTHOR_WARNING "You are building MultiMC in-source. This is NOT recommended!")
+    message(FATAL_ERROR "You are building MultiMC in-source. Please separate the build tree from the source tree.")
+endif()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    if(CMAKE_HOST_SYSTEM_VERSION MATCHES ".*[Mm]icrosoft.*" OR
+        CMAKE_HOST_SYSTEM_VERSION MATCHES ".*WSL.*"
+    )
+        message(FATAL_ERROR "Building MultiMC is not supported in Linux-on-Windows distributions.")
+    endif()
 endif()
 
 if(WIN32)
@@ -12,6 +20,7 @@ endif()
 
 project(MultiMC)
 enable_testing()
+
 
 ##################################### Set CMake options #####################################
 set(CMAKE_AUTOMOC ON)
@@ -59,6 +68,9 @@ set(MultiMC_CHANLIST_URL "" CACHE STRING "URL for the channel list.")
 
 # Notification URL
 set(MultiMC_NOTIFICATION_URL "" CACHE STRING "URL for checking for notifications.")
+
+# The metadata server
+set(MultiMC_META_URL "https://meta.multimc.org/v1/" CACHE STRING "URL to fetch MultiMC's meta files from.")
 
 # paste.ee API key
 set(MultiMC_PASTE_EE_API_KEY "utLvciUouSURFzfjPxLBf5W4ISsUX4pwBDF7N1AfZ" CACHE STRING "API key you can get from paste.ee when you register an account")
@@ -255,6 +267,7 @@ add_subdirectory(libraries/classparser) # google analytics library
 
 ############################### Built Artifacts ###############################
 
+add_subdirectory(buildconfig)
 add_subdirectory(api/logic)
 add_subdirectory(api/gui)
 
